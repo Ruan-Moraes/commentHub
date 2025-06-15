@@ -1,5 +1,6 @@
 package br.com.comment_hub.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,6 @@ public class Author {
     @OneToMany(mappedBy = "author", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Comment> comments;
 
-    @OneToOne
+    @OneToOne()
     private User user;
 }

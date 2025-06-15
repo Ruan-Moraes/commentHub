@@ -21,11 +21,11 @@ public class Comment {
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "post_id")
     private Post post;
 

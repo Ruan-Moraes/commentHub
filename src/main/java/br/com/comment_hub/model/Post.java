@@ -24,7 +24,7 @@ public class Post {
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "author_id")
     private Author author;
 

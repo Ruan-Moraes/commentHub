@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION update_timestamp_column()
+CREATE OR REPLACE FUNCTION fn_update_timestamp_column()
     RETURNS TRIGGER AS
 $$
 BEGIN
@@ -7,4 +7,4 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION update_timestamp_column() IS 'Função para atualizar a coluna updated_at de uma tabela sempre que um registro for atualizado';
+COMMENT ON FUNCTION fn_update_timestamp_column() IS 'Função para atualizar a coluna updated_at de uma tabela sempre que um registro for atualizado';
