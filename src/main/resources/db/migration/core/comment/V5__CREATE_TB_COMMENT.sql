@@ -1,0 +1,12 @@
+CREATE TABLE TB_COMMENT
+(
+    id         SERIAL PRIMARY KEY,
+    content    TEXT   NOT NULL,
+    author_id  BIGINT NOT NULL,
+    post_id    BIGINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (author_id) REFERENCES TB_AUTHOR (id),
+    FOREIGN KEY (post_id) REFERENCES TB_POST (id)
+);

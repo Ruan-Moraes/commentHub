@@ -1,0 +1,7 @@
+CREATE TABLE TB_AUTHOR
+(
+    id      SERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL UNIQUE,
+
+    FOREIGN KEY (user_id) REFERENCES TB_USER (id)
+);
