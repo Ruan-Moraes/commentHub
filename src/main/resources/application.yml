@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/commenthub
+    username: postgres
+    password: 1597532684
+  application:
+    name: CommentHub
+    jpa:
+      hibernate:
+        ddl-auto: update
+      open-in-view: true
+    flyway:
+      enabled: true
+      locations: classpath:db/migration
