@@ -55,8 +55,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult().getFieldErrors()
+    public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException e) {
+        List<String> errors = e.getBindingResult().getFieldErrors()
                 .stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

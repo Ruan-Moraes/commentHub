@@ -1,4 +1,6 @@
 package br.com.comment_hub.service.impl;
 
-public class CommentServiceImpl {
+import br.com.comment_hub.service.CommentService;
+
+public class CommentServiceImpl implements CommentService {
 }

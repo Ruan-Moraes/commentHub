@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.CONFLICT)
 public class EmailConflictException extends RuntimeException {
     public EmailConflictException() {
-        super("Email already exists");
+        super("Email já cadastrado. Por favor, tente outro email.");
     }
 }

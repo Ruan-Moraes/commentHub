@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/commenthub
+    url: jdbc:postgresql://localhost:5432/DB_COMMENT_HUB
     username: postgres
-    password: 1597532684
+    password: postgres
   application:
     name: CommentHub
     jpa:

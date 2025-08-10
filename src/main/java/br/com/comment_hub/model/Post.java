@@ -28,7 +28,7 @@ public class Post {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Comment> comments;
 
     @Temporal(TemporalType.TIMESTAMP)
