@@ -6,10 +6,12 @@ spring:
     password: postgres
   application:
     name: CommentHub
-    jpa:
-      hibernate:
-        ddl-auto: update
-      open-in-view: true
-    flyway:
-      enabled: true
-      locations: classpath:db/migration
+  jpa:
+    hibernate:
+      ddl-auto: update
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+commenthub:
+  security:
+    secret: QFxH]$9S7h/#LVtOm'sY[%C2{r/Iv&Cys(+ETH~lN[bX6>T}+N_BF%[iyA+f=7i

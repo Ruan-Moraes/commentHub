@@ -1,6 +1,7 @@
 package br.com.comment_hub.exception.handler;
 
 import br.com.comment_hub.exception.EmailConflictException;
+import br.com.comment_hub.exception.RegistrationException;
 import br.com.comment_hub.exception.TokenExpection;
 import br.com.comment_hub.exception.response.ExceptionResponse;
 import org.springframework.http.HttpHeaders;
@@ -42,7 +43,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TokenExpection.class)
-    public final ResponseEntity<ExceptionResponse> handleTokenException(TokenExpection e, WebRequest request) {
+    public final ResponseEntity<ExceptionResponse> TokenException(TokenExpection e, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 new Date().toString(),
                 String.valueOf(HttpStatus.UNAUTHORIZED),
@@ -52,6 +53,19 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(RegistrationException.class)
+    public final ResponseEntity<ExceptionResponse> RegistrationException(Exception e, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date().toString(),
+                String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR),
+                e.getClass().getSimpleName(),
+                e.getMessage(),
+                request.getDescription(false)
+        );
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

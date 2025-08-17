@@ -1,8 +1,10 @@
 package br.com.comment_hub.repository;
 
 import br.com.comment_hub.model.Author;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface AuthorRepository extends Repository<Author, Long> {
+@Repository
+public interface AuthorRepository extends JpaRepository<Author, Long> {
 
 }
