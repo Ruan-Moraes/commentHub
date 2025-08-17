@@ -1,6 +1,6 @@
 package br.com.comment_hub.service.impl;
 
-import br.com.comment_hub.model.User;
+import br.com.comment_hub.model.core.User;
 import br.com.comment_hub.service.TokenService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

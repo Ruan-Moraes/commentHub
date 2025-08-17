@@ -1,4 +1,4 @@
-package br.com.comment_hub.model;
+package br.com.comment_hub.model.core;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Entity()
-@Table(name = "TB_COMMENT")
+@Table(name = "tb_comment")
 @NoArgsConstructor()
 @AllArgsConstructor()
 @Data()

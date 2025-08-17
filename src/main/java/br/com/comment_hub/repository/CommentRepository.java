@@ -1,6 +1,6 @@
 package br.com.comment_hub.repository;
 
-import br.com.comment_hub.model.Comment;
+import br.com.comment_hub.model.core.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

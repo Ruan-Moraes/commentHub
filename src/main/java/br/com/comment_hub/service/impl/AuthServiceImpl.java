@@ -3,9 +3,10 @@ package br.com.comment_hub.service.impl;
 import br.com.comment_hub.dto.request.UserRequest;
 import br.com.comment_hub.exception.RegistrationException;
 import br.com.comment_hub.mapper.UserMapper;
-import br.com.comment_hub.model.User;
+import br.com.comment_hub.model.core.User;
 import br.com.comment_hub.repository.UserRepository;
 import br.com.comment_hub.service.AuthService;
+import br.com.comment_hub.service.TokenService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,9 +23,9 @@ public class AuthServiceImpl implements AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final TokenServiceImpl tokenService;
+    private final TokenService tokenService;
 
-    public AuthServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenServiceImpl tokenService) {
+    public AuthServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenService tokenService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
