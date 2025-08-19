@@ -1,0 +1,10 @@
+CREATE TABLE TB_USER_GROUP
+(
+    user_id  BIGINT NOT NULL,
+    group_id BIGINT NOT NULL,
+
+    PRIMARY KEY (user_id, group_id),
+
+    FOREIGN KEY (user_id) REFERENCES tb_user (id) ON DELETE CASCADE,
+    FOREIGN KEY (group_id) REFERENCES TB_GROUP (id) ON DELETE CASCADE
+);

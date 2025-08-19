@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -28,14 +29,25 @@ public class User implements UserDetails {
 
     private String password;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "tb_user_group",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "group_id")
+    )
+    private List<Group> groups;
 
     @Override
-    public String getPassword() {
-        return this.password;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (groups == null || groups.isEmpty()) {
+            return List.of();
+        }
+        
+        return groups.stream()
+                .flatMap(group -> group.getPermissions().stream())
+                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
+                .distinct()
+                .toList();
     }
 
     @Override

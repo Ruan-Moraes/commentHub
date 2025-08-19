@@ -72,6 +72,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Map<String, Object> logout() {
-        return new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Logout realizado com sucesso!");
+
+        return response;
     }
 }

@@ -1,0 +1,10 @@
+CREATE TABLE TB_GROUP_PERMISSION
+(
+    group_id      BIGINT NOT NULL,
+    permission_id BIGINT NOT NULL,
+
+    PRIMARY KEY (group_id, permission_id),
+
+    FOREIGN KEY (group_id) REFERENCES TB_GROUP (id) ON DELETE CASCADE,
+    FOREIGN KEY (permission_id) REFERENCES TB_PERMISSION (id) ON DELETE CASCADE
+);

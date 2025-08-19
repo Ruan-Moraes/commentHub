@@ -41,6 +41,8 @@ public class AuthControllerImpl implements AuthController {
     @Override
     @PostMapping("/logout")
     public ResponseEntity<Map<String, Object>> logout() {
-        return null;
+        Map<String, Object> response = authService.logout();
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
