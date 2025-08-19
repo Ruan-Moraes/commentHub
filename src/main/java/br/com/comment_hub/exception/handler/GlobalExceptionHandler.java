@@ -1,7 +1,8 @@
 package br.com.comment_hub.exception.handler;
 
 import br.com.comment_hub.exception.EmailConflictException;
-import br.com.comment_hub.exception.RegistrationException;
+import br.com.comment_hub.exception.LoginException;
+import br.com.comment_hub.exception.RegistrationConflictException;
 import br.com.comment_hub.exception.TokenExpection;
 import br.com.comment_hub.exception.response.ExceptionResponse;
 import br.com.comment_hub.model.logs.ErrorLogRepository;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
@@ -75,26 +77,39 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ExceptionResponse> tokenException(TokenExpection e, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 new Date().toString(),
-                String.valueOf(HttpStatus.UNAUTHORIZED),
+                String.valueOf(HttpStatus.BAD_REQUEST),
                 e.getClass().getSimpleName(),
                 e.getMessage(),
                 request.getDescription(false)
         );
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
 
-    @ExceptionHandler(RegistrationException.class)
-    public final ResponseEntity<ExceptionResponse> registrationException(RegistrationException e, WebRequest request) {
+    @ExceptionHandler(LoginException.class)
+    public final ResponseEntity<ExceptionResponse> loginException(LoginException e, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 new Date().toString(),
-                String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR),
+                String.valueOf(HttpStatus.BAD_REQUEST),
                 e.getClass().getSimpleName(),
                 e.getMessage(),
                 request.getDescription(false)
         );
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(RegistrationConflictException.class)
+    public final ResponseEntity<ExceptionResponse> registrationConflictException(RegistrationConflictException e, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date().toString(),
+                String.valueOf(HttpStatus.CONFLICT),
+                e.getClass().getSimpleName(),
+                e.getMessage(),
+                request.getDescription(false)
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionResponse);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

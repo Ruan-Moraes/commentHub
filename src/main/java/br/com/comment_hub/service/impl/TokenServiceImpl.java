@@ -1,5 +1,6 @@
 package br.com.comment_hub.service.impl;
 
+import br.com.comment_hub.exception.TokenExpection;
 import br.com.comment_hub.model.core.User;
 import br.com.comment_hub.service.TokenService;
 import com.auth0.jwt.JWT;
@@ -37,7 +38,7 @@ public class TokenServiceImpl implements TokenService {
 
             return true;
         } catch (JWTVerificationException e) {
-            return false;
+            throw new TokenExpection();
         }
     }
 
@@ -51,7 +52,7 @@ public class TokenServiceImpl implements TokenService {
 
             return decodedJWT.getSubject();
         } catch (JWTVerificationException e) {
-            return null;
+            throw new TokenExpection();
         }
     }
 }

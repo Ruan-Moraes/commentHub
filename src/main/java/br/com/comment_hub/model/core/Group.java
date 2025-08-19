@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Group {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -32,9 +31,9 @@ public class Group {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "tb_group_permission",
-        joinColumns = @JoinColumn(name = "group_id"),
-        inverseJoinColumns = @JoinColumn(name = "permission_id")
+            name = "tb_group_permission",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     private List<Permission> permissions;
 }

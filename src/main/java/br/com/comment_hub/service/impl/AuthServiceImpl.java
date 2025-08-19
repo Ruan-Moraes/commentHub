@@ -1,13 +1,15 @@
 package br.com.comment_hub.service.impl;
 
 import br.com.comment_hub.dto.request.UserRequest;
-import br.com.comment_hub.exception.RegistrationException;
+import br.com.comment_hub.exception.LoginException;
+import br.com.comment_hub.exception.RegistrationConflictException;
 import br.com.comment_hub.mapper.UserMapper;
 import br.com.comment_hub.model.core.User;
 import br.com.comment_hub.repository.UserRepository;
 import br.com.comment_hub.service.AuthService;
 import br.com.comment_hub.service.TokenService;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,10 +36,16 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Map<String, Object> login(UserRequest userRequest) {
+    public Map<String, Object> login(UserRequest userRequest) throws LoginException {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userRequest.getEmail(), userRequest.getPassword());
 
-        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        Authentication authentication = null;
+
+        try {
+            authentication = authenticationManager.authenticate(authenticationToken);
+        } catch (BadCredentialsException e) {
+            throw new LoginException();
+        }
 
         User user = (User) authentication.getPrincipal();
         user.setName(userRepository.selectNameByEmail(user.getEmail()));
@@ -53,7 +61,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Map<String, Object> register(UserRequest userRequest) throws RegistrationException {
+    public Map<String, Object> register(UserRequest userRequest) throws RegistrationConflictException {
+        if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
+            throw new RegistrationConflictException();
+        }
+
         String password = passwordEncoder.encode(userRequest.getPassword());
 
         userRequest.setPassword(password);

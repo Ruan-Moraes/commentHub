@@ -6,7 +6,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.Map;
 
 public interface AuthController {
-    public ResponseEntity<Map<String, Object>> login(UserRequest userRequest);
-    public ResponseEntity<Map<String, Object>> register(UserRequest userRequest);
-    public ResponseEntity<Map<String, Object>> logout();
+    ResponseEntity<Map<String, Object>> login(UserRequest userRequest);
+
+    ResponseEntity<Map<String, Object>> register(UserRequest userRequest);
+
+    ResponseEntity<Map<String, Object>> logout();
 }
