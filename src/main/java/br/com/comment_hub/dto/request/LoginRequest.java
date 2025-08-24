@@ -13,13 +13,8 @@ import lombok.NoArgsConstructor;
 @Data()
 @AllArgsConstructor()
 @NoArgsConstructor()
-public class UserRequest {
-    @NotNull(message = "O nome é obrigatório")
-    @NotBlank(message = "O nome não pode estar vazio")
-    @Size(min = 2, message = "O campo nome deve ter no mínimo 2 caracteres")
-    private String name;
-
-    @NotNull()
+public class LoginRequest {
+    @NotNull(message = "O email é obrigatório")
     @NotBlank(message = "O email não pode estar vazio")
     @Email(message = "O email deve ter um formato válido")
     private String email;

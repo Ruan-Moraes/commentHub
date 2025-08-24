@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor()
 @Data()
 @Builder()
-public class ErrorLogRepository {
+public class ErrorLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

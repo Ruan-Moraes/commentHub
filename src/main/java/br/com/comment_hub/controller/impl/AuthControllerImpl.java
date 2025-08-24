@@ -1,6 +1,7 @@
 package br.com.comment_hub.controller.impl;
 
 import br.com.comment_hub.controller.AuthController;
+import br.com.comment_hub.dto.request.LoginRequest;
 import br.com.comment_hub.dto.request.UserRequest;
 import br.com.comment_hub.service.AuthService;
 import jakarta.validation.Valid;
@@ -24,8 +25,8 @@ public class AuthControllerImpl implements AuthController {
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody UserRequest userRequest) {
-        Map<String, Object> message = authService.login(userRequest);
+    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody LoginRequest loginRequest) {
+        Map<String, Object> message = authService.login(loginRequest);
 
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }

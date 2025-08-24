@@ -5,14 +5,13 @@ import br.com.comment_hub.exception.LoginException;
 import br.com.comment_hub.exception.RegistrationConflictException;
 import br.com.comment_hub.exception.TokenExpection;
 import br.com.comment_hub.exception.response.ExceptionResponse;
-import br.com.comment_hub.model.logs.ErrorLogRepository;
+import br.com.comment_hub.model.logs.ErrorLog;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
@@ -124,14 +123,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception e, WebRequest request) {
-        ErrorLogRepository errorLogRepository = ErrorLogRepository.builder()
+        ErrorLog errorLog = ErrorLog.builder()
                 .createdAt(LocalDateTime.now())
                 .message(Objects.toString(e.getMessage(), e.getClass().getSimpleName()))
                 .stacktrace(stackTraceToString(e))
                 .status(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
                 .build();
 
-        this.errorLogRepository.save(errorLogRepository);
+        this.errorLogRepository.save(errorLog);
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 new Date().toString(),

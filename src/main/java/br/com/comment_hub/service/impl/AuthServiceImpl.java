@@ -1,5 +1,6 @@
 package br.com.comment_hub.service.impl;
 
+import br.com.comment_hub.dto.request.LoginRequest;
 import br.com.comment_hub.dto.request.UserRequest;
 import br.com.comment_hub.exception.LoginException;
 import br.com.comment_hub.exception.RegistrationConflictException;
@@ -36,8 +37,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Map<String, Object> login(UserRequest userRequest) throws LoginException {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userRequest.getEmail(), userRequest.getPassword());
+    public Map<String, Object> login(LoginRequest loginRequest) throws LoginException {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
 
         Authentication authentication = null;
 
@@ -53,9 +54,13 @@ public class AuthServiceImpl implements AuthService {
         String token = tokenService.generateToken(user);
 
         Map<String, Object> response = new HashMap<>();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("user", userMapper.toUserResponse(user));
+        data.put("token", token);
+
+        response.put("data", data);
         response.put("message", "Usuário logado com sucesso!");
-        response.put("user", userMapper.toUserResponse(user));
-        response.put("token", token);
 
         return response;
     }
@@ -75,9 +80,13 @@ public class AuthServiceImpl implements AuthService {
         String token = tokenService.generateToken(user);
 
         Map<String, Object> response = new HashMap<>();
+        
+        Map<String, Object> data = new HashMap<>();
+        data.put("user", userMapper.toUserResponse(user));
+        data.put("token", token);
+
+        response.put("data", data);
         response.put("message", "Usuário cadastrado com sucesso!");
-        response.put("user", userMapper.toUserResponse(user));
-        response.put("token", token);
 
         return response;
     }
