@@ -31,9 +31,9 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "tb_user_group",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "group_id")
+            name = "tb_user_group",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id")
     )
     private List<Group> groups;
 
@@ -42,7 +42,7 @@ public class User implements UserDetails {
         if (groups == null || groups.isEmpty()) {
             return List.of();
         }
-        
+
         return groups.stream()
                 .flatMap(group -> group.getPermissions().stream())
                 .map(permission -> new SimpleGrantedAuthority(permission.getName()))

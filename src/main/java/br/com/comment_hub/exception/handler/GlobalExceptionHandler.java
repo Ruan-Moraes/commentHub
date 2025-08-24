@@ -1,9 +1,6 @@
 package br.com.comment_hub.exception.handler;
 
-import br.com.comment_hub.exception.EmailConflictException;
-import br.com.comment_hub.exception.LoginException;
-import br.com.comment_hub.exception.RegistrationConflictException;
-import br.com.comment_hub.exception.TokenExpection;
+import br.com.comment_hub.exception.*;
 import br.com.comment_hub.exception.response.ExceptionResponse;
 import br.com.comment_hub.model.logs.ErrorLog;
 import org.springframework.http.HttpHeaders;
@@ -46,7 +43,7 @@ public class GlobalExceptionHandler {
         String full = sw.toString();
         String[] lines = full.split("\\R");
 
-        int limit = Math.min(lines.length, 10);
+        int limit = Math.min(lines.length, 6);
 
         StringBuilder sb = new StringBuilder();
 
@@ -98,6 +95,32 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionResponse);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public final ResponseEntity<ExceptionResponse> unauthorizedException(UnauthorizedException e, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date().toString(),
+                String.valueOf(HttpStatus.UNAUTHORIZED),
+                e.getClass().getSimpleName(),
+                e.getMessage(),
+                request.getDescription(false)
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
+    }
+
+//    @ExceptionHandler(AuthorizationDeniedException.class)
+//    public ResponseEntity<ExceptionResponse> authorizationDeniedException(AuthorizationDeniedException e, WebRequest request) {
+//        ExceptionResponse exceptionResponse = new ExceptionResponse(
+//                new Date().toString(),
+//                String.valueOf(HttpStatus.UNAUTHORIZED),
+//                e.getClass().getSimpleName(),
+//                e.getMessage(),
+//                request.getDescription(false)
+//        );
+//
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
+//    }
+
     @ExceptionHandler(RegistrationConflictException.class)
     public final ResponseEntity<ExceptionResponse> registrationConflictException(RegistrationConflictException e, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(
@@ -109,6 +132,19 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> notFoundException(NotFoundException e, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date().toString(),
+                String.valueOf(HttpStatus.NOT_FOUND),
+                e.getClass().getSimpleName(),
+                e.getMessage(),
+                request.getDescription(false)
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -123,23 +159,37 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception e, WebRequest request) {
-        ErrorLog errorLog = ErrorLog.builder()
-                .createdAt(LocalDateTime.now())
-                .message(Objects.toString(e.getMessage(), e.getClass().getSimpleName()))
-                .stacktrace(stackTraceToString(e))
-                .status(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
-                .build();
+        Map<String, ExceptionConfig> exceptionConfigs = Map.of(
+                "AuthorizationDeniedException", new ExceptionConfig("Não autorizado!", HttpStatus.UNAUTHORIZED, false),
+                "ValidationException", new ExceptionConfig("Dados inválidos!", HttpStatus.BAD_REQUEST, true)
+        );
 
-        this.errorLogRepository.save(errorLog);
+        String exceptionName = e.getClass().getSimpleName();
+
+        ExceptionConfig config = exceptionConfigs.getOrDefault(
+                exceptionName,
+                new ExceptionConfig("Ops, ocorreu um erro inesperado, estamos trabalhando para resolver isso. Por favor, tente novamente mais tarde.", HttpStatus.INTERNAL_SERVER_ERROR, true)
+        );
+
+        if (config.shouldLog()) {
+            ErrorLog errorLog = ErrorLog.builder()
+                    .createdAt(LocalDateTime.now())
+                    .message(Objects.toString(e.getMessage(), e.getClass().getSimpleName()))
+                    .stacktrace(stackTraceToString(e))
+                    .status(String.valueOf(config.status().value()))
+                    .build();
+
+            this.errorLogRepository.save(errorLog);
+        }
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 new Date().toString(),
-                String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR),
+                String.valueOf(config.status().value()),
                 e.getClass().getSimpleName(),
-                "Ops, ocorreu um erro inesperado, estamos trabalhando para resolver isso. Por favor, tente novamente mais tarde.",
+                config.message(),
                 request.getDescription(false)
         );
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
+        return ResponseEntity.status(config.status()).body(exceptionResponse);
     }
 }

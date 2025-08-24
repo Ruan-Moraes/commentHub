@@ -13,6 +13,11 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
 commenthub:
   security:
     secret: QFxH]$9S7h/#LVtOm'sY[%C2{r/Iv&Cys(+ETH~lN[bX6>T}+N_BF%[iyA+f=7i

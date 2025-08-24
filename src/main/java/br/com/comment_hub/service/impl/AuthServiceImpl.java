@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
         String token = tokenService.generateToken(user);
 
         Map<String, Object> response = new HashMap<>();
-        
+
         Map<String, Object> data = new HashMap<>();
         data.put("user", userMapper.toUserResponse(user));
         data.put("token", token);

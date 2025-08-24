@@ -9,6 +9,8 @@ import java.util.Map;
 
 public interface AuthService {
     Map<String, Object> login(LoginRequest loginRequest) throws LoginException;
+
     Map<String, Object> register(UserRequest userRequest) throws RegistrationConflictException;
+
     Map<String, Object> logout();
 }
