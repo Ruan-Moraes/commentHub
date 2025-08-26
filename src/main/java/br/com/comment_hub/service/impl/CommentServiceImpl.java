@@ -90,10 +90,10 @@ public class CommentServiceImpl implements CommentService {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
 
-        data.put("comments", comments.map(commentMapper::toCommentResponse));
+        data.put("comments", comments.map(commentMapper::toCommentResponse).getContent());
         data.put("totalElements", comments.getTotalElements());
         data.put("totalPages", comments.getTotalPages());
-        data.put("currentPage", comments.getNumber());
+        data.put("currentPage", comments.getNumber() + 1);
 
         response.put("data", data);
         response.put("message", "Comentários listados com sucesso!");
@@ -111,10 +111,10 @@ public class CommentServiceImpl implements CommentService {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
 
-        data.put("comments", comments.map(commentMapper::toCommentResponse));
+        data.put("comments", comments.map(commentMapper::toCommentResponse).getContent());
         data.put("totalElements", comments.getTotalElements());
         data.put("totalPages", comments.getTotalPages());
-        data.put("currentPage", comments.getNumber());
+        data.put("currentPage", comments.getNumber() + 1);
         data.put("postTitle", post.getTitle());
 
         response.put("data", data);

@@ -161,7 +161,7 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception e, WebRequest request) {
         Map<String, ExceptionConfig> exceptionConfigs = Map.of(
                 "AuthorizationDeniedException", new ExceptionConfig("Não autorizado!", HttpStatus.UNAUTHORIZED, false),
-                "ValidationException", new ExceptionConfig("Dados inválidos!", HttpStatus.BAD_REQUEST, true)
+                "PropertyReferenceException", new ExceptionConfig("Propriedade inválida na consulta. Verifique se o nome do campo utilizado para ordenação ou filtro existe na entidade.", HttpStatus.BAD_REQUEST, false)
         );
 
         String exceptionName = e.getClass().getSimpleName();

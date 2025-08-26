@@ -64,10 +64,10 @@ public class AuthorServiceImpl implements AuthorService {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
 
-        data.put("authors", authors.map(authorMapper::toAuthorResponse));
+        data.put("authors", authors.map(authorMapper::toAuthorResponse).getContent());
         data.put("totalElements", authors.getTotalElements());
         data.put("totalPages", authors.getTotalPages());
-        data.put("currentPage", authors.getNumber());
+        data.put("currentPage", authors.getNumber() + 1);
 
         response.put("data", data);
         response.put("message", "Autores listados com sucesso!");
@@ -85,10 +85,10 @@ public class AuthorServiceImpl implements AuthorService {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
 
-        data.put("posts", posts.map(postMapper::toPostResponse));
+        data.put("posts", posts.map(postMapper::toPostResponse).getContent());
         data.put("totalElements", posts.getTotalElements());
         data.put("totalPages", posts.getTotalPages());
-        data.put("currentPage", posts.getNumber());
+        data.put("currentPage", posts.getNumber() + 1);
         data.put("author", authorMapper.toAuthorResponse(author));
 
         response.put("data", data);
@@ -107,10 +107,10 @@ public class AuthorServiceImpl implements AuthorService {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
 
-        data.put("comments", comments.map(commentMapper::toCommentResponse));
+        data.put("comments", comments.map(commentMapper::toCommentResponse).getContent());
         data.put("totalElements", comments.getTotalElements());
         data.put("totalPages", comments.getTotalPages());
-        data.put("currentPage", comments.getNumber());
+        data.put("currentPage", comments.getNumber() + 1);
         data.put("author", authorMapper.toAuthorResponse(author));
 
         response.put("data", data);
@@ -127,6 +127,7 @@ public class AuthorServiceImpl implements AuthorService {
         Author author = authorRepository.findByUser(user)
                 .orElseGet(() -> {
                     Author newAuthor = Author.builder().user(user).build();
+
                     return authorRepository.save(newAuthor);
                 });
 

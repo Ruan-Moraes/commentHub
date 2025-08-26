@@ -2,8 +2,12 @@ package br.com.comment_hub.controller.impl;
 
 import br.com.comment_hub.controller.CommentController;
 import br.com.comment_hub.dto.request.CommentRequest;
+import br.com.comment_hub.enums.SortFields;
 import br.com.comment_hub.service.CommentService;
+import br.com.comment_hub.utils.PaginationUtils;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +50,12 @@ public class CommentControllerImpl implements CommentController {
 
     @Override
     @GetMapping("/")
-    public ResponseEntity<Map<String, Object>> findAll(Pageable pageable) {
+    public ResponseEntity<Map<String, Object>> findAll(@RequestParam @Min(0) int page,
+                                                       @RequestParam @Min(0) @Max(10) int size,
+                                                       @RequestParam(required = false) String sortBy) {
+        Pageable pageable = PaginationUtils.createPageableWithValidation(
+                page, size, sortBy, SortFields.COMMENT, SortFields.DEFAULT_COMMENT_SORT);
+
         Map<String, Object> response = commentService.findAll(pageable);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -54,7 +63,13 @@ public class CommentControllerImpl implements CommentController {
 
     @Override
     @GetMapping("/post/{postId}")
-    public ResponseEntity<Map<String, Object>> findByPostId(@PathVariable Long postId, Pageable pageable) {
+    public ResponseEntity<Map<String, Object>> findByPostId(@PathVariable Long postId,
+                                                            @RequestParam @Min(0) int page,
+                                                            @RequestParam @Min(0) @Max(10) int size,
+                                                            @RequestParam(required = false) String sortBy) {
+        Pageable pageable = PaginationUtils.createPageableWithValidation(
+                page, size, sortBy, SortFields.COMMENT, SortFields.DEFAULT_COMMENT_SORT);
+
         Map<String, Object> response = commentService.findByPostId(postId, pageable);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);

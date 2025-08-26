@@ -82,10 +82,10 @@ public class PostServiceImpl implements PostService {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
 
-        data.put("posts", posts.map(postMapper::toPostResponse));
+        data.put("posts", posts.map(postMapper::toPostResponse).getContent());
         data.put("totalElements", posts.getTotalElements());
         data.put("totalPages", posts.getTotalPages());
-        data.put("currentPage", posts.getNumber());
+        data.put("currentPage", posts.getNumber() + 1);
 
         response.put("data", data);
         response.put("message", "Posts listados com sucesso!");
