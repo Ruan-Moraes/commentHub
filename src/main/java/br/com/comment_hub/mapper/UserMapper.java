@@ -15,10 +15,21 @@ public class UserMapper {
                 .build();
     }
 
+    public User toEntity(UserRequest userRequest) {
+        return toUser(userRequest);
+    }
+
     public UserResponse toUserResponse(User user) {
         return UserResponse.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
+                .active(user.getActive())
+                .createdAt(user.getCreatedAt())
                 .build();
+    }
+
+    public UserResponse toResponse(User user) {
+        return toUserResponse(user);
     }
 }

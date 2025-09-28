@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Min;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +34,11 @@ public class AuthorControllerImpl implements AuthorController {
 
     @Override
     @GetMapping(value = "/")
-    public ResponseEntity<Map<String, Object>> findAll(@RequestParam @Min(0) int page,
-                                                       @RequestParam @Min(0) @Max(10) int size,
-                                                       @RequestParam(required = false) String sortBy) {
+    public ResponseEntity<Map<String, Object>> findAll(
+            @RequestParam @Min(0) int page,
+            @RequestParam @Min(0) @Max(10) int size,
+            @RequestParam(required = false) String sortBy
+    ) {
         Pageable pageable = PaginationUtils.createPageableWithValidation(
                 page, size, sortBy, SortFields.AUTHOR, SortFields.DEFAULT_AUTHOR_SORT);
 
@@ -48,10 +49,12 @@ public class AuthorControllerImpl implements AuthorController {
 
     @Override
     @GetMapping("/{id}/posts")
-    public ResponseEntity<Map<String, Object>> findPostsByAuthorId(@PathVariable Long id,
-                                                                   @RequestParam @Min(0) int page,
-                                                                   @RequestParam @Min(0) @Max(10) int size,
-                                                                   @RequestParam(required = false) String sortBy) {
+    public ResponseEntity<Map<String, Object>> findPostsByAuthorId(
+            @PathVariable Long id,
+            @RequestParam @Min(0) int page,
+            @RequestParam @Min(0) @Max(10) int size,
+            @RequestParam(required = false) String sortBy
+    ) {
         Pageable pageable = PaginationUtils.createPageableWithValidation(
                 page, size, sortBy, SortFields.POST, SortFields.DEFAULT_POST_SORT);
 
@@ -62,10 +65,12 @@ public class AuthorControllerImpl implements AuthorController {
 
     @Override
     @GetMapping("/{id}/comments")
-    public ResponseEntity<Map<String, Object>> findCommentsByAuthorId(@PathVariable Long id,
-                                                                      @RequestParam int page,
-                                                                      @RequestParam @Min(0) @Max(10) int size,
-                                                                      @RequestParam(required = false) String sortBy) {
+    public ResponseEntity<Map<String, Object>> findCommentsByAuthorId(
+            @PathVariable Long id,
+            @RequestParam int page,
+            @RequestParam @Min(0) @Max(10) int size,
+            @RequestParam(required = false) String sortBy
+    ) {
         Pageable pageable = PaginationUtils.createPageableWithValidation(
                 page, size, sortBy, SortFields.COMMENT, SortFields.DEFAULT_COMMENT_SORT);
 
@@ -76,7 +81,6 @@ public class AuthorControllerImpl implements AuthorController {
 
     @Override
     @GetMapping("/profile")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> getProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

@@ -50,9 +50,11 @@ public class PostControllerImpl implements PostController {
 
     @Override
     @GetMapping("/")
-    public ResponseEntity<Map<String, Object>> findAll(@RequestParam @Min(0) int page,
-                                                       @RequestParam @Min(0) @Max(10) int size,
-                                                       @RequestParam(required = false) String sortBy) {
+    public ResponseEntity<Map<String, Object>> findAll(
+            @RequestParam @Min(0) int page,
+            @RequestParam @Min(0) @Max(10) int size,
+            @RequestParam(required = false) String sortBy
+    ) {
         Pageable pageable = PaginationUtils.createPageableWithValidation(
                 page, size, sortBy, SortFields.POST, SortFields.DEFAULT_POST_SORT);
 
@@ -64,7 +66,10 @@ public class PostControllerImpl implements PostController {
     @Override
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('post:write')")
-    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Valid @RequestBody PostRequest postRequest) {
+    public ResponseEntity<Map<String, Object>> update(
+            @PathVariable Long id,
+            @Valid @RequestBody PostRequest postRequest
+    ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String authorEmail = authentication.getName();

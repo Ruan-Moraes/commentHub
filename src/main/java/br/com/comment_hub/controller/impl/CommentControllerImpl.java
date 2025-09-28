@@ -5,6 +5,7 @@ import br.com.comment_hub.dto.request.CommentRequest;
 import br.com.comment_hub.enums.SortFields;
 import br.com.comment_hub.service.CommentService;
 import br.com.comment_hub.utils.PaginationUtils;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -33,9 +34,8 @@ public class CommentControllerImpl implements CommentController {
     public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody CommentRequest commentRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String authorEmail = authentication.getName();
-        
-        Map<String, Object> response = commentService.create(commentRequest, authorEmail);
 
+        Map<String, Object> response = commentService.create(commentRequest, authorEmail);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -50,9 +50,11 @@ public class CommentControllerImpl implements CommentController {
 
     @Override
     @GetMapping("/")
-    public ResponseEntity<Map<String, Object>> findAll(@RequestParam @Min(0) int page,
-                                                       @RequestParam @Min(0) @Max(10) int size,
-                                                       @RequestParam(required = false) String sortBy) {
+    public ResponseEntity<Map<String, Object>> findAll(
+            @RequestParam @Min(0) int page,
+            @RequestParam @Min(0) @Max(10) int size,
+            @RequestParam(required = false) String sortBy
+    ) {
         Pageable pageable = PaginationUtils.createPageableWithValidation(
                 page, size, sortBy, SortFields.COMMENT, SortFields.DEFAULT_COMMENT_SORT);
 
@@ -63,10 +65,12 @@ public class CommentControllerImpl implements CommentController {
 
     @Override
     @GetMapping("/post/{postId}")
-    public ResponseEntity<Map<String, Object>> findByPostId(@PathVariable Long postId,
-                                                            @RequestParam @Min(0) int page,
-                                                            @RequestParam @Min(0) @Max(10) int size,
-                                                            @RequestParam(required = false) String sortBy) {
+    public ResponseEntity<Map<String, Object>> findByPostId(
+            @PathVariable Long postId,
+            @RequestParam @Min(0) int page,
+            @RequestParam @Min(0) @Max(10) int size,
+            @RequestParam(required = false) String sortBy
+    ) {
         Pageable pageable = PaginationUtils.createPageableWithValidation(
                 page, size, sortBy, SortFields.COMMENT, SortFields.DEFAULT_COMMENT_SORT);
 
@@ -78,11 +82,14 @@ public class CommentControllerImpl implements CommentController {
     @Override
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('comment:write')")
-    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Valid @RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<Map<String, Object>> update(
+            @PathVariable Long id,
+            @Valid @RequestBody CommentRequest commentRequest
+    ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String authorEmail = authentication.getName();
-        
+
         Map<String, Object> response = commentService.update(id, commentRequest, authorEmail);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -91,11 +98,14 @@ public class CommentControllerImpl implements CommentController {
     @Override
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('comment:write')")
-    public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> delete(
+            @Parameter(description = "ID do comentário", required = true, example = "1")
+            @PathVariable Long id
+    ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String authorEmail = authentication.getName();
-        
+
         Map<String, Object> response = commentService.delete(id, authorEmail);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);

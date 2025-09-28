@@ -25,7 +25,9 @@ public class AuthControllerImpl implements AuthController {
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Map<String, Object>> login(
+            @Valid @RequestBody LoginRequest loginRequest
+    ) {
         Map<String, Object> message = authService.login(loginRequest);
 
         return ResponseEntity.status(HttpStatus.OK).body(message);

@@ -17,26 +17,31 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UserControllerImpl implements UserController {
-
     @Override
     @PostMapping("/")
-    public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody UserRequest userRequest) {
+    public ResponseEntity<Map<String, Object>> create(
+            @Valid @RequestBody UserRequest userRequest
+    ) {
         // TODO: Implement user creation logic
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> findById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> findById(
+            @PathVariable Long id
+    ) {
         // TODO: Implement user findById logic
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 
     @Override
     @GetMapping("/")
-    public ResponseEntity<Map<String, Object>> findAll(@RequestParam @Min(0) int page,
-                                                       @RequestParam @Min(0) @Max(10) int size,
-                                                       @RequestParam(required = false) String sortBy) {
+    public ResponseEntity<Map<String, Object>> findAll(
+            @RequestParam @Min(0) int page,
+            @RequestParam @Min(0) @Max(10) int size,
+            @RequestParam(required = false) String sortBy
+    ) {
         // Demonstration of secure pagination implementation using PaginationUtils
         Pageable pageable = PaginationUtils.createPageableWithValidation(
                 page, size, sortBy, SortFields.USER, SortFields.DEFAULT_USER_SORT);
@@ -47,7 +52,10 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {
+    public ResponseEntity<Map<String, Object>> update(
+            @PathVariable Long id,
+            @Valid @RequestBody UserRequest userRequest
+    ) {
         // TODO: Implement user update logic
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
